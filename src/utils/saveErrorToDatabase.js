@@ -6,7 +6,7 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
 
 module.exports =  async(error) => {
 
-    const db = client.db('WMC5.0'); 
+    const db = client.db('WMC5'); 
 
   try {
     const errorCollection = db.collection('errors');
