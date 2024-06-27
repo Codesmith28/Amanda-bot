@@ -1,18 +1,14 @@
 import path from "path";
 import getAllFiles from "./getAllFiles";
-
-interface CommandObject {
-  name: string;
-  [key: string]: any;
-}
+import { CommandOption } from "./types";
 
 // This function will take all the local commands(commands that are newly created/updated) in an array
 // and then return it.
 export default function getLocalCommands(
   exceptions: string[] = []
-): CommandObject[] {
+): CommandOption[] {
   // Initializing the array which we will return after filling all the commands
-  const localCommands: CommandObject[] = [];
+  const localCommands: CommandOption[] = [];
 
   // commandCategories will get all the folders which are there in the src/commands folder category wise.
   const commandCategories = getAllFiles(
@@ -28,7 +24,7 @@ export default function getLocalCommands(
     for (const commandFile of commandFiles) {
       // now our main command is stored in form of JSON in that commandFile and
       // we only need to push the object so first we will extract that object
-      const commandObject: CommandObject = require(commandFile);
+      const commandObject: CommandOption = require(commandFile);
 
       if (exceptions.includes(commandObject.name)) {
         // if the command is enlisted in the exceptions then we won't push it in our localCommands

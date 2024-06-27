@@ -7,7 +7,8 @@ dotenv.config();
 const uri = process.env.MONGODB_URI!;
 const client = new MongoClient(uri);
 
-const logErrorToDatabase = async (error: CustomError): Promise<void> => {
+const logErrorToDatabase = async (error: Error): Promise<void> => {
+  throw error;
   const db = client.db("WMC5");
 
   try {

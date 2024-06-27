@@ -1,7 +1,6 @@
-const { ApplicationCommandOptionType, PermissionFlagsBits } = require('discord.js');
+import { Client, CommandInteraction, ApplicationCommandOptionType } from 'discord.js';
 
-module.exports = {
-
+export default {
     name: 'ping',
     description: 'pong',
     devOnly: false,
@@ -9,7 +8,7 @@ module.exports = {
     // options: [{    }],
     deleted: true,
 
-    callback: (client, interaction) => {
+    callback: (client: Client, interaction: CommandInteraction) => {
         interaction.reply('pong');
         return;
     },
