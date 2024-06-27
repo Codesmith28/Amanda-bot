@@ -5,6 +5,9 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  '@google/generative-ai':
+    specifier: ^0.14.0
+    version: 0.14.0
   axios:
     specifier: ^1.4.0
     version: 1.7.2
@@ -98,6 +101,11 @@ packages:
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
+    dev: false
+
+  /@google/generative-ai@0.14.0:
+    resolution: {integrity: sha512-wNgIGEpInlVd98SapqvnQX8HQz0zM43U9NMvrbIMKQzz2pQm60pJTeHHlICTDcy/yZNLsvFQ/RfD+Ck9H8K7vw==}
+    engines: {node: '>=18.0.0'}
     dev: false
 
   /@mongodb-js/saslprep@1.1.7:
