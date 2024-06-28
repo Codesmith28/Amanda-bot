@@ -12,6 +12,12 @@ export const devOnly = false;
 export const testOnly = false;
 export const options = [
   {
+    name: "verbose",
+    description: "Verbose output",
+    type: ApplicationCommandOptionType.Boolean,
+    default: false,
+  },
+  {
     name: "username",
     description: "The username to assign the role to",
     type: ApplicationCommandOptionType.User,
@@ -95,30 +101,33 @@ async function assignRoleToUsers(
       if (guildMember) {
         const roleIds = getRoleIds(guildMember);
         const commonRoles = arrayIntersection(roleIds, Object.values(roleMap));
-        console.log(commonRoles);
-        if (commonRoles.length == 1 && commonRoles[0] == roleID) {
-          //   content.push(
-          //     `${
-          //       guildMember.user
-          //     } Already has the role ${guildMember.roles.cache.get(roleID)}`
-          //   );
 
+        if (commonRoles.length == 1 && commonRoles[0] == roleID) {
+          if (interaction.options.get("verbose")?.value) {
+            content.push(
+              `${
+                guildMember.user
+              } Already has the role ${guildMember.roles.cache.get(roleID)}`
+            );
+          }
           continue;
         } else if (commonRoles.length == 0) {
           await guildMember.roles.add(roleID);
           content.push(
-            `Assign Role ${mentionRoleId(roleID)} to ${guildMember.user}`
+            `Assign ${mentionRoleId(roleID)} to ${guildMember.user}`
           );
         } else {
           await guildMember.roles.remove(commonRoles);
           await guildMember.roles.add(roleID);
           content.push(
-            `**Reassign** Role ${mentionRoleId(roleID)} to ${guildMember.user}`
+            `**Reassign** ${mentionRoleId(roleID)} to ${guildMember.user}`
           );
         }
       } else {
-        content.push(`Username ${username} not found`);
-        console.log(`User ${username} not found`);
+        if (interaction.options.get("verbose")?.value) {
+          content.push(`Username ${username} not found`);
+        }
+        // console.log(`User ${username} not found`);
       }
     }
     return content;
@@ -137,7 +146,6 @@ export async function callback(
 ) {
   const member = interaction.member as GuildMember;
 
-  console.log("object");
   if (!member.roles.cache.has(ADMIN_ROLE_ID)) {
     await interaction.reply({
       content: "You do not have permission to use this command.",
@@ -177,7 +185,7 @@ export async function callback(
   // Getting the role ID and list of usernames from interaction options
   for (const role of Object.keys(roleMap)) {
     const usernames = await getAllUsernamesByRole(role as ProblemRole);
-    console.log(usernames);
+
     const roleID = roleMap[role as ProblemRole];
     const newContent = await assignRoleToUsers(interaction, roleID, usernames);
     if (newContent) {
@@ -185,7 +193,7 @@ export async function callback(
     }
   }
   if (content.length === 0) {
-    content.push("No roles assigned.");
+    content.push("No roles updated.");
   }
   await interaction.editReply({
     content: content.join("\n"),
