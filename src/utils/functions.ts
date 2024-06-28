@@ -1,13 +1,16 @@
 import { MongoClient } from "mongodb";
 import dotenv from "dotenv";
-import { CustomError } from "./types";
 
 dotenv.config();
+
+export function calculateLevelUpXp(level: number): number {
+  return 100 * level || 1;
+}
 
 const uri = process.env.MONGODB_URI!;
 const client = new MongoClient(uri);
 
-const logErrorToDatabase = async (error: Error): Promise<void> => {
+export async function saveErrorToDatabase(error: Error): Promise<void> {
   console.log(error);
   const db = client.db("WMC5");
 
@@ -23,6 +26,4 @@ const logErrorToDatabase = async (error: Error): Promise<void> => {
   } catch (err) {
     console.error("Error saving error to database:", err);
   }
-};
-
-export default logErrorToDatabase;
+}

@@ -1,7 +1,7 @@
 import { Client, Interaction, Snowflake } from "discord.js";
 import { devs, testServer } from "../../../config.json";
 import getLocalCommands from "../../utils/getLocalCommands";
-import saveErrorToDatabase from "../../utils/saveErrorToDatabase";
+import { saveErrorToDatabase } from "../../utils/functions";
 import { CommandOption } from "../../utils/types";
 
 export default async function handleInteraction(

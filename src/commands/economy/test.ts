@@ -5,7 +5,7 @@ import {
   ApplicationCommandOptionType,
 } from "discord.js";
 import reply from "../../utils/reply";
-import saveErrorToDatabase from "../../utils/saveErrorToDatabase";
+import { saveErrorToDatabase } from "../../utils/functions";
 
 export const name = "test";
 export const description = "Testing new features";

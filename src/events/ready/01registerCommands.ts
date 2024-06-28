@@ -1,6 +1,6 @@
 import areCommandsDifferent from "../../utils/areCommandsDifferent";
 import getLocalCommands from "../../utils/getLocalCommands";
-import saveErrorToDatabase from "../../utils/saveErrorToDatabase";
+import { saveErrorToDatabase } from "../../utils/functions";
 import getApplicationCommands from "../../utils/getApplicationCommands";
 import { testServer } from "../../../config.json";
 import { Client, ApplicationCommandData, ApplicationCommand } from "discord.js";

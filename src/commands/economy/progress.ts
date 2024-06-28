@@ -5,7 +5,7 @@ import {
   ApplicationCommandOptionType,
 } from "discord.js";
 import User from "../../models/User";
-import saveErrorToDatabase from "../../utils/saveErrorToDatabase";
+import { saveErrorToDatabase } from "../../utils/functions";
 import reply from "../../utils/reply";
 
 export const name = "progress";

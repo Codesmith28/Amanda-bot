@@ -1,17 +1,7 @@
-import {
-  Client,
-  GuildMember,
-  ButtonStyle,
-  ActionRowBuilder,
-  ButtonBuilder,
-} from "discord.js";
+import { Client, GuildMember } from "discord.js";
 import Level from "../../models/Level";
-import saveErrorToDatabase from "../../utils/saveErrorToDatabase";
+import { saveErrorToDatabase } from "../../utils/functions";
 
-/**
- * @param {Client} client
- * @param {GuildMember} member
- */
 export default async function assignMentorRole(
   client: Client,
   member: GuildMember
@@ -32,6 +22,6 @@ export default async function assignMentorRole(
     }
     return;
   } catch (error) {
-    saveErrorToDatabase(error);
+    saveErrorToDatabase(error as Error);
   }
 }

@@ -1,7 +1,7 @@
 import { Client, Collection, Message, Role } from "discord.js";
 
-import calculateLevelXp from "../../utils/calculateLevelUpXp";
-import saveErrorToDatabase from "../../utils/saveErrorToDatabase";
+import { calculateLevelUpXp } from "../../utils/functions";
+import { saveErrorToDatabase } from "../../utils/functions";
 import Level from "../../models/Level";
 
 const cooldowns = new Set();
@@ -23,11 +23,6 @@ function getRole(message: Message) {
   return roleArr[0];
 }
 
-/**
- *
- * @param {Client} client
- * @param {Message} message
- */
 export default async function giveXp(client: Client, message: Message) {
   if (!message.guild || message.author.bot || cooldowns.has(message.author.id))
     return;
@@ -44,7 +39,7 @@ export default async function giveXp(client: Client, message: Message) {
     if (level) {
       level.xp += xpToGive;
       // message.channel.send(`${message.member} you have xp up to **level ${level.xp}**.`);
-      if (level.xp > calculateLevelXp(level.level)) {
+      if (level.xp > calculateLevelUpXp(level.level)) {
         level.xp = 0;
         level.level += 1;
         const statusChannelID = process.env.STATUS_CHANNEL_ID;

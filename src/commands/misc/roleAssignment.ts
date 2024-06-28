@@ -1,7 +1,7 @@
 // roleassignment.ts
 import { Client, CommandInteraction, PermissionFlagsBits } from "discord.js";
 import Level from "../../models/Level";
-import saveErrorToDatabase from "../../utils/saveErrorToDatabase";
+import { saveErrorToDatabase } from "../../utils/functions";
 
 export const name = "roleassignment";
 export const description = "Will assign roles to members";

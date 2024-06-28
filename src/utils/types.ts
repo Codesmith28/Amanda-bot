@@ -6,10 +6,6 @@ import {
   Snowflake,
 } from "discord.js";
 
-export interface CustomError extends Error {
-  stack?: string;
-}
-
 export interface CommandOption {
   name: string;
   description: string;

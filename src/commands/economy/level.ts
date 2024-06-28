@@ -8,8 +8,8 @@ import {
   User,
 } from "discord.js";
 import canvacord from "canvacord";
-import calculateLevelXp from "../../utils/calculateLevelUpXp";
-import saveErrorToDatabase from "../../utils/saveErrorToDatabase";
+import { calculateLevelUpXp } from "../../utils/functions";
+import { saveErrorToDatabase } from "../../utils/functions";
 import Level from "../../models/Level";
 
 function getRole(targetUserObj: GuildMember): string {
@@ -90,7 +90,7 @@ export async function callback(
       .setRank(currentRank)
       .setLevel(fetchedLevel!.level)
       .setCurrentXP(fetchedLevel!.xp)
-      .setRequiredXP(calculateLevelXp(fetchedLevel!.level))
+      .setRequiredXP(calculateLevelUpXp(fetchedLevel!.level))
       .setProgressBar("#800000", "COLOR")
       .setUsername(fetchedLevel!.username)
       .setDiscriminator(targetUserObj.user.discriminator);
