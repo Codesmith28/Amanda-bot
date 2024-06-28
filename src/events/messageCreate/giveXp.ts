@@ -31,7 +31,6 @@ export default async function giveXp(client: Client, message: Message) {
 
   const query = {
     username: message.author.username,
-    role: getRole(message),
   };
 
   try {
