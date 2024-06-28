@@ -10,10 +10,13 @@ module.exports = {
   devOnly: false,
   testOnly: false,
   // options: [{    }],
-  deleted: true,
+  deleted: false,
 
-  callback: (client: Client, interaction: CommandInteraction) => {
-    interaction.reply("pong");
+  callback: async (client: Client, interaction: CommandInteraction) => {
+    await interaction.deferReply();
+    await interaction.editReply({
+      content: `Pong, ${interaction.member!.user}! `,
+    });
     return;
   },
 };

@@ -8,7 +8,7 @@ const uri = process.env.MONGODB_URI!;
 const client = new MongoClient(uri);
 
 const logErrorToDatabase = async (error: Error): Promise<void> => {
-  throw error;
+  console.log(error);
   const db = client.db("WMC5");
 
   try {

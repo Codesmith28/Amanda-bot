@@ -11,11 +11,6 @@ import calculateLevelXp from "../../utils/calculateLevelUpXp";
 import saveErrorToDatabase from "../../utils/saveErrorToDatabase";
 import Level from "../../models/Level";
 
-/**
- * Retrieves the primary role of a given user.
- * @param {GuildMember} targetUserObj The guild member object of the user.
- * @returns {string} The primary role of the user.
- */
 function getRole(targetUserObj: GuildMember): string {
   const authorRoles = targetUserObj.roles.cache;
   let roleArr: string[] = [];
@@ -26,12 +21,7 @@ function getRole(targetUserObj: GuildMember): string {
 }
 
 module.exports = {
-  /**
-   * Handler for the 'level' command interaction.
-   * @param {Client} client The Discord client instance.
-   * @param {Interaction} interaction The interaction object representing the command interaction.
-   */
-  callback1: async (client: Client, interaction: CommandInteraction) => {
+  callback: async (client: Client, interaction: CommandInteraction) => {
     try {
       await interaction.deferReply();
 

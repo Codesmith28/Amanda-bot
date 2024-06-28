@@ -18,7 +18,6 @@ export default function eventHandler(client: Client): void {
     if (eventName) {
       client.on(eventName, async (args: any) => {
         for (const eventFile of eventFiles) {
-          console.log(eventFile);
           const eventFunction = require(eventFile) as {
             default: EventFunction;
           };
