@@ -1,8 +1,9 @@
+import { ActivityType, Client, IntentsBitField } from "discord.js";
 import dotenv from "dotenv";
-import { Client, IntentsBitField, ActivityType } from "discord.js";
-import mongoose from "mongoose";
-import eventHandler from "./handlers/eventHandler";
 import express, { Request, Response } from "express";
+import mongoose from "mongoose";
+import "tsconfig-paths/register";
+import eventHandler from "./handlers/eventHandler";
 
 dotenv.config();
 

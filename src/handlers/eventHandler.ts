@@ -1,6 +1,6 @@
-import path from "path";
+import getAllFiles from "@/utils/getAllFiles";
 import { Client } from "discord.js";
-import getAllFiles from "../utils/getAllFiles";
+import path from "path";
 
 type EventFunction = (client: Client, args: any) => void;
 
