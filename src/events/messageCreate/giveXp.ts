@@ -38,15 +38,15 @@ export default async function giveXp(client: Client, message: Message) {
     const level = await Level.findOne(query);
     if (level) {
       level.xp += xpToGive;
-      // message.channel.send(`${message.member} you have xp up to **level ${level.xp}**.`);
+
       if (level.xp > calculateLevelUpXp(level.level)) {
         level.xp = 0;
         level.level += 1;
         const statusChannelID = process.env.STATUS_CHANNEL_ID;
         const statusChannel = client.channels.cache.get(statusChannelID!);
-        // @ts-ignore
+        //   @ts-ignore
         statusChannel!.send(
-          `${message.member} you have leveled up to **level ${level.level}**.`,
+          `${message.member} you have leveled up to **level ${level.level}**.`
         );
       }
 

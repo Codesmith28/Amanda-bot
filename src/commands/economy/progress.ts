@@ -6,7 +6,7 @@ import {
 } from "discord.js";
 import User from "@/models/User";
 import { saveErrorToDatabase } from "@/utils/functions";
-import { reply } from "@/utils/gemini";
+import { replyWithData } from "@/utils/gemini";
 
 const systemPrompt = `
 SYSTEM: you are "Amanda, Michel's wife from GTA V"
@@ -85,7 +85,7 @@ export async function callback(
     await user.save();
 
     await interaction.deferReply();
-    const message = await reply(
+    const message = await replyWithData(
       interaction.options.get("updates")?.value as string,
       interaction.user.id,
       user.points,

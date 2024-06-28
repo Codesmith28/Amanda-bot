@@ -4,7 +4,7 @@ import {
   Client,
   ApplicationCommandOptionType,
 } from "discord.js";
-import { reply } from "@/utils/gemini";
+import { replyWithData } from "@/utils/gemini";
 import { saveErrorToDatabase } from "@/utils/functions";
 
 export const name = "test";
@@ -19,7 +19,7 @@ export const options = [
     required: true,
   },
 ];
-export const deleted = false;
+export const deleted = true;
 
 export async function callback(
   client: Client,
@@ -40,7 +40,7 @@ export async function callback(
       return;
     }
 
-    const message = await reply(
+    const message = await replyWithData(
       interaction.options.get("updates") as any,
       interaction.user.id,
       25,

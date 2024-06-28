@@ -13,6 +13,28 @@ const genAI = new GoogleGenerativeAI(apiKey);
 
 const model = genAI.getGenerativeModel({
   model: "gemini-1.5-flash",
+  safetySettings: [
+    {
+      category: HarmCategory.HARM_CATEGORY_HARASSMENT,
+      threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH,
+    },
+    {
+      category: HarmCategory.HARM_CATEGORY_HATE_SPEECH,
+      threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH,
+    },
+    {
+      category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
+      threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH,
+    },
+    {
+      category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT,
+      threshold: HarmBlockThreshold.BLOCK_NONE,
+    },
+    {
+      category: HarmCategory.HARM_CATEGORY_UNSPECIFIED,
+      threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH,
+    },
+  ],
 });
 
 const generationConfig = {
@@ -23,7 +45,7 @@ const generationConfig = {
   responseMimeType: "text/plain",
 };
 
-export async function reply(
+export async function replyWithData(
   updates: string,
   userID: string,
   points: number,
@@ -56,4 +78,13 @@ export async function reply(
     console.log(error);
     return "BhagulobsDobby";
   }
+}
+
+export async function reply(message: string): Promise<string> {
+  const chatSession = model.startChat({
+    generationConfig,
+    history: [],
+  });
+  const result = await chatSession.sendMessage([{ text: message }]);
+  return result.response.text();
 }

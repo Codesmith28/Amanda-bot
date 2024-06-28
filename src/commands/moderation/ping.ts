@@ -1,4 +1,5 @@
 // ping.ts
+
 import { Client, CommandInteraction } from "discord.js";
 
 export const name = "ping";
@@ -13,6 +14,7 @@ export async function callback(
   interaction: CommandInteraction
 ) {
   await interaction.deferReply();
+
   await interaction.editReply({
     content: `Pong, ${interaction.member!.user}!`,
   });
