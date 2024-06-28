@@ -1,60 +1,53 @@
-import reply from "../../utils/reply";
+// test.ts
 import {
-  Client,
-  Interaction,
-  ApplicationCommandOptionType,
   CommandInteraction,
+  Client,
+  ApplicationCommandOptionType,
 } from "discord.js";
+import reply from "../../utils/reply";
 import saveErrorToDatabase from "../../utils/saveErrorToDatabase";
 
-module.exports = {
-  name: "test",
-  description: "Testing new features",
-  devOnly: false,
-  testOnly: false,
-  options: [
-    {
-      name: "updates",
-      description: "Progress made",
-      type: ApplicationCommandOptionType.String,
-      required: true,
-    },
-  ],
-  deleted: false,
-
-  /**
-   * @param {Client} client
-   * @param {Interaction} interaction
-   */
-  callback: async (client: Client, interaction: CommandInteraction) => {
-    try {
-      await interaction.deferReply();
-
-      // Check if command is used in the correct channel
-      if (interaction.channelId !== "1134034886240518205") {
-        interaction.editReply("This command can't be used here.");
-        return;
-      }
-
-      // Check if user is the server admin
-      if (interaction.user.id !== "508258668312002574") {
-        interaction.editReply("Only the server admin can run this command.");
-        return;
-      }
-
-      // Process the updates using the reply function
-      const message = await reply(
-        interaction.options.get("updates")!.value as string,
-        interaction.user.id,
-        25
-      );
-
-      // Update the interaction with the processed message
-      interaction.editReply(message);
-      return;
-    } catch (error) {
-      console.error(error);
-      saveErrorToDatabase(error as Error);
-    }
+export const name = "test";
+export const description = "Testing new features";
+export const devOnly = false;
+export const testOnly = false;
+export const options = [
+  {
+    name: "updates",
+    description: "Progress made",
+    type: ApplicationCommandOptionType.String,
+    required: true,
   },
-};
+];
+export const deleted = false;
+
+export async function callback(
+  client: Client,
+  interaction: CommandInteraction
+) {
+  try {
+    await interaction.deferReply();
+
+    if (interaction.channelId !== "1134034886240518205") {
+      await interaction.editReply("This command can't be used here.");
+      return;
+    }
+
+    if (interaction.user.id !== "508258668312002574") {
+      await interaction.editReply(
+        "Only the server admin can run this command."
+      );
+      return;
+    }
+
+    const message = await reply(
+      interaction.options.get("updates") as any,
+      interaction.user.id,
+      25
+    );
+    await interaction.editReply(message);
+  } catch (error) {
+    console.error(error);
+    saveErrorToDatabase(error as Error);
+  }
+}
