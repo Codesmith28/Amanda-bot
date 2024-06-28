@@ -114,13 +114,13 @@ async function assignRoleToUsers(
         } else if (commonRoles.length == 0) {
           await guildMember.roles.add(roleID);
           content.push(
-            `Assign ${mentionRoleId(roleID)} to ${guildMember.user}`
+            `Assigned ${mentionRoleId(roleID)} to ${guildMember.user}`
           );
         } else {
           await guildMember.roles.remove(commonRoles);
           await guildMember.roles.add(roleID);
           content.push(
-            `**Reassign** ${mentionRoleId(roleID)} to ${guildMember.user}`
+            `**Reassigned** ${mentionRoleId(roleID)} to ${guildMember.user}`
           );
         }
       } else {
