@@ -2,7 +2,8 @@ import areCommandsDifferent from "../../utils/areCommandsDifferent";
 import getLocalCommands from "../../utils/getLocalCommands";
 import { saveErrorToDatabase } from "../../utils/functions";
 import getApplicationCommands from "../../utils/getApplicationCommands";
-import { testServer } from "../../../config.json";
+//import { testServer } from "../../../config.json";
+import { testServer } from "@config";
 import { Client, ApplicationCommandData, ApplicationCommand } from "discord.js";
 import { CommandOption } from "../../utils/types";
 
@@ -12,14 +13,14 @@ export default async function manageCommands(client: Client): Promise<void> {
     const localCommands = getLocalCommands();
     const applicationCommands = await getApplicationCommands(
       client,
-      testServer
+      testServer,
     );
 
     for (const localCommand of localCommands) {
       const { name, description, options, deleted } = localCommand;
 
       const existingCommand = applicationCommands.cache.find(
-        (cmd: ApplicationCommand) => cmd.name === name
+        (cmd: ApplicationCommand) => cmd.name === name,
       );
 
       if (existingCommand) {
@@ -41,7 +42,7 @@ export default async function manageCommands(client: Client): Promise<void> {
       } else {
         if (deleted) {
           console.log(
-            `⏩ Skipping registering command "${name}" as it's set to delete.`
+            `⏩ Skipping registering command "${name}" as it's set to delete.`,
           );
           continue;
         }
