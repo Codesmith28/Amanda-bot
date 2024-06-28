@@ -65,7 +65,7 @@ export default async function handleInteraction(
 
       await commandObject.callback(client, interaction);
     } catch (error) {
-      saveErrorToDatabase(error);
+      saveErrorToDatabase(error as Error);
     }
   } else if (interaction.isButton()) {
     try {
@@ -81,7 +81,7 @@ export default async function handleInteraction(
         }
       }
     } catch (error) {
-      saveErrorToDatabase(error);
+      saveErrorToDatabase(error as Error);
     }
   }
 }
