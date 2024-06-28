@@ -1,38 +1,15 @@
-import axios from "axios";
 import dotenv from "dotenv";
 import {
   GoogleGenerativeAI,
   HarmCategory,
   HarmBlockThreshold,
+  Content,
 } from "@google/generative-ai";
 
 dotenv.config();
 
 const apiKey = process.env.GEMINI_API_KEY!;
 const genAI = new GoogleGenerativeAI(apiKey);
-
-const model = genAI.getGenerativeModel({
-  model: "gemini-1.5-flash",
-
-  safetySettings: [
-    {
-      category: HarmCategory.HARM_CATEGORY_HARASSMENT,
-      threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH,
-    },
-    {
-      category: HarmCategory.HARM_CATEGORY_HATE_SPEECH,
-      threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH,
-    },
-    {
-      category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
-      threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH,
-    },
-    {
-      category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT,
-      threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH,
-    },
-  ],
-});
 
 const generationConfig = {
   temperature: 1,
@@ -42,6 +19,25 @@ const generationConfig = {
   responseMimeType: "text/plain",
 };
 
+const safetySettings = [
+  {
+    category: HarmCategory.HARM_CATEGORY_HARASSMENT,
+    threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH,
+  },
+  {
+    category: HarmCategory.HARM_CATEGORY_HATE_SPEECH,
+    threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH,
+  },
+  {
+    category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
+    threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH,
+  },
+  {
+    category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT,
+    threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH,
+  },
+];
+
 export async function replyWithData(
   updates: string,
   userID: string,
@@ -49,6 +45,13 @@ export async function replyWithData(
   systemPrompt: string
 ): Promise<string> {
   try {
+    const model = genAI.getGenerativeModel({
+      model: "gemini-1.5-flash",
+
+      safetySettings,
+      systemInstruction: systemPrompt,
+    });
+
     const chatSession = model.startChat({
       generationConfig,
       // safetySettings: Adjust safety settings
@@ -60,7 +63,6 @@ export async function replyWithData(
     const str = ` USERID: ${userID}`;
     const pts = ` DAILYPROGRESSPOINTS: ${points}`;
     const result = await chatSession.sendMessage([
-      { text: systemPrompt },
       { text: updates + str + pts },
     ]);
 
@@ -77,11 +79,26 @@ export async function replyWithData(
   }
 }
 
-export async function reply(message: string): Promise<string> {
+export async function reply(
+  message: string,
+  system?: string,
+
+  maxOutputTokens?: number
+): Promise<string> {
+  const model = genAI.getGenerativeModel({
+    model: "gemini-1.5-flash",
+    systemInstruction: system,
+
+    safetySettings,
+  });
+  if (maxOutputTokens) {
+    generationConfig.maxOutputTokens = maxOutputTokens;
+  }
   const chatSession = model.startChat({
     generationConfig,
     history: [],
   });
   const result = await chatSession.sendMessage([{ text: message }]);
+
   return result.response.text();
 }

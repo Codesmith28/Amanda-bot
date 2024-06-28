@@ -1,4 +1,4 @@
-import { Client, Collection, Message, Role } from "discord.js";
+import { Client, Collection, Message, Role, TextChannel } from "discord.js";
 
 import { calculateLevelUpXp } from "@/utils/functions";
 import { saveErrorToDatabase } from "@/utils/functions";
@@ -43,8 +43,10 @@ export default async function giveXp(client: Client, message: Message) {
         level.xp = 0;
         level.level += 1;
         const statusChannelID = process.env.STATUS_CHANNEL_ID;
-        const statusChannel = client.channels.cache.get(statusChannelID!);
-        //   @ts-ignore
+        const statusChannel = client.channels.cache.get(
+          statusChannelID!
+        ) as TextChannel;
+
         statusChannel!.send(
           `${message.member} you have leveled up to **level ${level.level}**.`
         );
@@ -60,8 +62,10 @@ export default async function giveXp(client: Client, message: Message) {
       }, 60000);
     } else {
       const statusChannelID = process.env.STATUS_CHANNEL_ID;
-      const statusChannel = client.channels.cache.get(statusChannelID!);
-      //   @ts-ignore
+      const statusChannel = client.channels.cache.get(
+        statusChannelID!
+      ) as TextChannel;
+
       statusChannel.send(`${message.member} you haven't registered in the db`);
       //message.channel.send(
       //    `${message.author} you haven't registered in the db`,
