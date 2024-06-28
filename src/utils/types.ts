@@ -26,3 +26,5 @@ export type Option = ApplicationCommandOption & {
   required?: boolean;
   choices?: APIApplicationCommandOptionChoice[];
 };
+
+export type ProblemRole = "easy" | "medium-1" | "medium-2" | "hard";
