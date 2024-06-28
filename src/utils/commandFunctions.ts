@@ -1,9 +1,14 @@
 import {
   APIApplicationCommandOptionChoice,
   ApplicationCommand,
+  ApplicationCommandManager,
+  Client,
+  GuildApplicationCommandManager,
   GuildResolvable,
 } from "discord.js";
 import { CommandOption, Option } from "./types";
+import path from "path";
+import { getAllFiles } from "./functions";
 
 function areChoicesDifferent(
   existingChoices: APIApplicationCommandOptionChoice[],
@@ -55,7 +60,7 @@ function areOptionsDifferent(
   return false;
 }
 
-export default function areCommandsDifferent(
+export function areCommandsDifferent(
   existingCommand: ApplicationCommand<{
     guild: GuildResolvable;
   }>,
@@ -73,4 +78,61 @@ export default function areCommandsDifferent(
   }
 
   return false;
+}
+
+export function getLocalCommands(exceptions: string[] = []): CommandOption[] {
+  const localCommands: CommandOption[] = [];
+
+  const commandCategories = getAllFiles(
+    path.join(__dirname, "..", "commands"),
+    true
+  );
+
+  for (const category of commandCategories) {
+    const commandFiles = getAllFiles(category, false);
+
+    for (const commandFile of commandFiles) {
+      const commandObject: CommandOption = require(commandFile);
+
+      if (exceptions.includes(commandObject.name)) {
+        continue;
+      }
+      localCommands.push(commandObject);
+    }
+  }
+
+  return localCommands;
+}
+
+export async function getApplicationCommands(
+  client: Client,
+  guildID?: string
+): Promise<GuildApplicationCommandManager | ApplicationCommandManager> {
+  let applicationCommands:
+    | GuildApplicationCommandManager
+    | ApplicationCommandManager;
+
+  if (guildID) {
+    try {
+      // Log the guild ID being fetched
+      console.log(`Fetching commands for guild ID: ${guildID}`);
+      const guild = await client.guilds.fetch(guildID);
+      applicationCommands = guild.commands;
+    } catch (error) {
+      console.error(`Failed to fetch guild with ID: ${guildID}`, error);
+      throw error;
+    }
+  } else {
+    console.log("Fetching application commands");
+    applicationCommands = client.application!.commands;
+  }
+
+  try {
+    await applicationCommands.fetch({});
+  } catch (error) {
+    console.error("Failed to fetch application commands", error);
+    throw error;
+  }
+
+  return applicationCommands;
 }

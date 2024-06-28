@@ -1,5 +1,7 @@
 import { MongoClient } from "mongodb";
 import dotenv from "dotenv";
+import fs from "fs";
+import path from "path";
 
 dotenv.config();
 
@@ -26,4 +28,29 @@ export async function saveErrorToDatabase(error: Error): Promise<void> {
   } catch (err) {
     console.error("Error saving error to database:", err);
   }
+}
+
+export function getAllFiles(
+  directory: string,
+  foldersOnly: boolean = false
+): string[] {
+  let fileNames: string[] = [];
+
+  const files = fs.readdirSync(directory, { withFileTypes: true });
+
+  for (const file of files) {
+    const filePath = path.join(directory, file.name);
+
+    if (foldersOnly) {
+      if (file.isDirectory()) {
+        fileNames.push(filePath);
+      }
+    } else {
+      if (file.isFile()) {
+        fileNames.push(filePath);
+      }
+    }
+  }
+
+  return fileNames;
 }

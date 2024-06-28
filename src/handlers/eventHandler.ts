@@ -1,4 +1,4 @@
-import getAllFiles from "@/utils/getAllFiles";
+import { getAllFiles } from "@/utils/functions";
 import { Client } from "discord.js";
 import path from "path";
 

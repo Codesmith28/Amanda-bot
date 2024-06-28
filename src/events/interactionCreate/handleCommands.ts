@@ -1,19 +1,19 @@
 import { Client, Interaction, Snowflake } from "discord.js";
 import { devs, testServer } from "@/../config.json";
-import getLocalCommands from "@/utils/getLocalCommands";
+import { getLocalCommands } from "@/utils/commandFunctions";
 import { saveErrorToDatabase } from "@/utils/functions";
 import { CommandOption } from "@/utils/types";
 
 export default async function handleInteraction(
   client: Client,
-  interaction: Interaction,
+  interaction: Interaction
 ): Promise<void> {
   const localCommands: CommandOption[] = getLocalCommands();
 
   if (interaction.isCommand()) {
     try {
       const commandObject = localCommands.find(
-        (cmd) => cmd.name === interaction.commandName,
+        (cmd) => cmd.name === interaction.commandName
       );
 
       if (!commandObject) return;
@@ -74,7 +74,7 @@ export default async function handleInteraction(
         interaction.message.author.bot
       ) {
         const commandObject = localCommands.find(
-          (cmd) => cmd.name === "roleassignment",
+          (cmd) => cmd.name === "roleassignment"
         );
         if (commandObject) {
           await commandObject.callback(client, interaction);
