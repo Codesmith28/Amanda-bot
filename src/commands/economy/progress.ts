@@ -43,13 +43,13 @@ export async function callback(
     let user = await User.findOne(query);
 
     if (user) {
-      user.data.push(interaction.options.get("updates")! as any);
+      user.data.push(interaction.options.get("updates")?.value as string);
       user.lastDaily = new Date();
     } else {
       user = new User({
         ...query,
         lastDaily: new Date(),
-        data: [interaction.options.get("updates")!],
+        data: [interaction.options.get("updates")?.value as string],
         points: 25,
       });
     }
@@ -59,7 +59,7 @@ export async function callback(
 
     await interaction.deferReply();
     const message = await reply(
-      interaction.options.get("updates") as any,
+      interaction.options.get("updates")?.value as string,
       interaction.user.id,
       user.points
     );

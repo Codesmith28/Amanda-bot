@@ -1,16 +1,11 @@
-import { Schema, Document, model } from 'mongoose';
-
-export interface UserData {
-  type: string;
-  default: string;
-}
+import { Schema, Document, model } from "mongoose";
 
 export interface UserDocument extends Document {
   userId: string;
   guildId: string;
   points: number;
   lastDaily: Date;
-  data: UserData[];
+  data: string[];
 }
 
 const userSchema = new Schema<UserDocument>({
@@ -30,12 +25,14 @@ const userSchema = new Schema<UserDocument>({
     type: Date,
     required: true,
   },
-  data: [{
-    type: String,
-    default: "Dobby",
-  }],
+  data: [
+    {
+      type: String,
+      default: "Dobby",
+    },
+  ],
 });
 
-const User = model<UserDocument>('User', userSchema);
+const User = model<UserDocument>("User", userSchema);
 
 export default User;
