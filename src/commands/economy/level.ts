@@ -8,9 +8,9 @@ import {
   User,
 } from "discord.js";
 import canvacord from "canvacord";
-import { calculateLevelUpXp } from "../../utils/functions";
-import { saveErrorToDatabase } from "../../utils/functions";
-import Level from "../../models/Level";
+import { calculateLevelUpXp } from "@/utils/functions";
+import { saveErrorToDatabase } from "@/utils/functions";
+import Level from "@/models/Level";
 
 function getRole(targetUserObj: GuildMember): string {
   const authorRoles = targetUserObj.roles.cache;
@@ -37,7 +37,7 @@ export const deleted = false;
 
 export async function callback(
   client: Client,
-  interaction: CommandInteraction
+  interaction: CommandInteraction,
 ) {
   try {
     await interaction.deferReply();
@@ -45,7 +45,7 @@ export async function callback(
     // Ensure the command is only run in the specified status channel
     if (interaction.channelId !== process.env.STATUS_CHANNEL_ID) {
       await interaction.editReply(
-        "You can only run this command in the status channel"
+        "You can only run this command in the status channel",
       );
       return;
     }
@@ -53,7 +53,7 @@ export async function callback(
     let targetUser = interaction.member;
 
     let targetUserObj = await interaction.guild!.members.fetch(
-      targetUser!.user.id
+      targetUser!.user.id,
     );
 
     // If 'target-user' option is provided, fetch the user object

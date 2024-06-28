@@ -1,11 +1,11 @@
 import { Client, Collection, Message, Role } from "discord.js";
 
-import { calculateLevelUpXp } from "../../utils/functions";
-import { saveErrorToDatabase } from "../../utils/functions";
-import Level from "../../models/Level";
+import { calculateLevelUpXp } from "@/utils/functions";
+import { saveErrorToDatabase } from "@/utils/functions";
+import Level from "@/models/Level";
 
 const cooldowns = new Set();
-// const roleDistribution = require('../../utils/roleDistribution');
+// const roleDistribution = require('@/utils/roleDistribution');
 
 function getRandomXp(min: number, max: number) {
   min = Math.ceil(min);
@@ -46,7 +46,7 @@ export default async function giveXp(client: Client, message: Message) {
         const statusChannel = client.channels.cache.get(statusChannelID!);
         // @ts-ignore
         statusChannel!.send(
-          `${message.member} you have leveled up to **level ${level.level}**.`
+          `${message.member} you have leveled up to **level ${level.level}**.`,
         );
       }
 

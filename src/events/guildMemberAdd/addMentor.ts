@@ -1,13 +1,13 @@
 import { Client, GuildMember } from "discord.js";
-import Level from "../../models/Level";
-import { saveErrorToDatabase } from "../../utils/functions";
+import Level from "@/models/Level";
+import { saveErrorToDatabase } from "@/utils/functions";
 
 export default async function assignMentorRole(
   client: Client,
-  member: GuildMember
+  member: GuildMember,
 ) {
   const registrationChannel = client.channels.cache.get(
-    process.env.REGISTRATION_CHANNEL_ID!
+    process.env.REGISTRATION_CHANNEL_ID!,
   );
   try {
     const memberUsername = member.user.username;

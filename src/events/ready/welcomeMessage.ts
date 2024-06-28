@@ -4,7 +4,7 @@ import {
   ButtonBuilder,
   ActionRowBuilder,
 } from "discord.js";
-import { saveErrorToDatabase } from "../../utils/functions";
+import { saveErrorToDatabase } from "@/utils/functions";
 
 export default function welcomeMessage(client: Client) {
   try {

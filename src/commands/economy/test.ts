@@ -4,8 +4,8 @@ import {
   Client,
   ApplicationCommandOptionType,
 } from "discord.js";
-import reply from "../../utils/reply";
-import { saveErrorToDatabase } from "../../utils/functions";
+import reply from "@/utils/reply";
+import { saveErrorToDatabase } from "@/utils/functions";
 
 export const name = "test";
 export const description = "Testing new features";
@@ -23,7 +23,7 @@ export const deleted = false;
 
 export async function callback(
   client: Client,
-  interaction: CommandInteraction
+  interaction: CommandInteraction,
 ) {
   try {
     await interaction.deferReply();
@@ -35,7 +35,7 @@ export async function callback(
 
     if (interaction.user.id !== "508258668312002574") {
       await interaction.editReply(
-        "Only the server admin can run this command."
+        "Only the server admin can run this command.",
       );
       return;
     }
@@ -43,7 +43,7 @@ export async function callback(
     const message = await reply(
       interaction.options.get("updates") as any,
       interaction.user.id,
-      25
+      25,
     );
     await interaction.editReply(message);
   } catch (error) {

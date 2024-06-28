@@ -1,11 +1,11 @@
-import areCommandsDifferent from "../../utils/areCommandsDifferent";
-import getLocalCommands from "../../utils/getLocalCommands";
-import { saveErrorToDatabase } from "../../utils/functions";
-import getApplicationCommands from "../../utils/getApplicationCommands";
-//import { testServer } from "../../../config.json";
+import areCommandsDifferent from "@/utils/areCommandsDifferent";
+import getLocalCommands from "@/utils/getLocalCommands";
+import { saveErrorToDatabase } from "@/utils/functions";
+import getApplicationCommands from "@/utils/getApplicationCommands";
+//import { testServer } from "@/../config.json";
 import { testServer } from "@config";
 import { Client, ApplicationCommandData, ApplicationCommand } from "discord.js";
-import { CommandOption } from "../../utils/types";
+import { CommandOption } from "@/utils/types";
 
 export default async function manageCommands(client: Client): Promise<void> {
   try {

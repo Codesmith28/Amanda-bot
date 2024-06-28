@@ -1,7 +1,7 @@
 // roleassignment.ts
 import { Client, CommandInteraction, PermissionFlagsBits } from "discord.js";
-import Level from "../../models/Level";
-import { saveErrorToDatabase } from "../../utils/functions";
+import Level from "@/models/Level";
+import { saveErrorToDatabase } from "@/utils/functions";
 
 export const name = "roleassignment";
 export const description = "Will assign roles to members";
@@ -13,7 +13,7 @@ export const botPermissions = [PermissionFlagsBits.ManageRoles];
 
 export async function callback(
   client: Client,
-  interaction: CommandInteraction
+  interaction: CommandInteraction,
 ) {
   try {
     await interaction.deferReply({ ephemeral: true });
