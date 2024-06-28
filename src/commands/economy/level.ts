@@ -25,13 +25,13 @@ function getRole(targetUserObj: GuildMember): string {
   return roleArr[0];
 }
 
-export default {
+module.exports = {
   /**
    * Handler for the 'level' command interaction.
    * @param {Client} client The Discord client instance.
    * @param {Interaction} interaction The interaction object representing the command interaction.
    */
-  async callback(client: Client, interaction: CommandInteraction) {
+  callback1: async (client: Client, interaction: CommandInteraction) => {
     try {
       await interaction.deferReply();
 
