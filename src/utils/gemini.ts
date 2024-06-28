@@ -23,43 +23,18 @@ const generationConfig = {
   responseMimeType: "text/plain",
 };
 
-const systemPrompt = `
-SYSTEM: you are "Amanda, Michel's wife from GTA V"
-
-- You are an AI discord bot (use discord markdown to format your text).
-
-CONTEXT:
-- The students have organized a Website Making challenge (WMC).
-- The students everyday come to you and share their updates and progress in the challenge.
-
-INPUT:
-- Progress of the student
-- userId of the participant (tag the user in the reply wherever you like)
-- current daily progress points of the participant (mention this in reply)
-
-OUTPUT RULES: 
-- follow the given OUTPUT FORMAT 
-- don't make the output longer then 30 words
-
-
-OUTPUT FORMAT:
-[I like it, great work etc. hook sentences] [mention them with bit of playfulness] 
-[talk about what they have done concisely]
-Your Points: **[their progress points]**
-
-
-`;
-
-const updateStudentProgress = async (
+export async function reply(
   updates: string,
   userID: string,
-  points: number
-): Promise<string> => {
+  points: number,
+  systemPrompt: string
+): Promise<string> {
   try {
     const chatSession = model.startChat({
       generationConfig,
       // safetySettings: Adjust safety settings
       // See https://ai.google.dev/gemini-api/docs/safety-settings
+
       history: [],
     });
 
@@ -81,6 +56,4 @@ const updateStudentProgress = async (
     console.log(error);
     return "BhagulobsDobby";
   }
-};
-
-export default updateStudentProgress;
+}
