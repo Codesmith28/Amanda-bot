@@ -1,11 +1,47 @@
-import { Client, CommandInteraction, GuildMember } from "discord.js";
+import {
+  ApplicationCommandOptionType,
+  Client,
+  CommandInteraction,
+  GuildMember,
+} from "discord.js";
 import { ProblemRole } from "@/utils/types";
 import Level, { LevelDocument } from "@/models/Level";
 export const name = "reassign";
 export const description = "assign the roles from the database to the user";
 export const devOnly = false;
 export const testOnly = false;
-export const options = [];
+export const options = [
+  {
+    name: "username",
+    description: "The username to assign the role to",
+    type: ApplicationCommandOptionType.User,
+    required: false,
+  },
+  {
+    name: "role",
+    description: "The role to assign",
+    type: ApplicationCommandOptionType.String,
+    required: false,
+    choices: [
+      {
+        name: "easy",
+        value: "easy",
+      },
+      {
+        name: "medium-1",
+        value: "medium-1",
+      },
+      {
+        name: "medium-2",
+        value: "medium-2",
+      },
+      {
+        name: "hard",
+        value: "hard",
+      },
+    ],
+  },
+];
 export const deleted = false;
 
 const ADMIN_ROLE_ID = process.env.ADMIN_ROLE_ID!;
@@ -61,11 +97,12 @@ async function assignRoleToUsers(
         const commonRoles = arrayIntersection(roleIds, Object.values(roleMap));
         console.log(commonRoles);
         if (commonRoles.length == 1 && commonRoles[0] == roleID) {
-          content.push(
-            `${
-              guildMember.user
-            } Already has the role ${guildMember.roles.cache.get(roleID)}`
-          );
+          //   content.push(
+          //     `${
+          //       guildMember.user
+          //     } Already has the role ${guildMember.roles.cache.get(roleID)}`
+          //   );
+
           continue;
         } else if (commonRoles.length == 0) {
           await guildMember.roles.add(roleID);
@@ -80,7 +117,7 @@ async function assignRoleToUsers(
           );
         }
       } else {
-        content.push(`User ${username} not found`);
+        content.push(`Username ${username} not found`);
         console.log(`User ${username} not found`);
       }
     }
@@ -110,6 +147,32 @@ export async function callback(
   }
 
   await interaction.deferReply();
+
+  if (interaction.options.get("username") && interaction.options.get("role")) {
+    const username = interaction.options.get("username")!.user!.username;
+    const role = interaction.options.get("role")!.value as ProblemRole;
+    const roleID = roleMap[role];
+    const newContent = await assignRoleToUsers(interaction, roleID, [username]);
+    if (newContent) {
+      await Level.findOneAndUpdate({ username }, { role }, { upsert: true });
+      await interaction.editReply({
+        content: newContent.join("\n"),
+      });
+    } else {
+      await interaction.editReply({
+        content: "No roles assigned.",
+      });
+    }
+    return;
+  } else if (
+    !interaction.options.get("role") !== !interaction.options.get("username")
+  ) {
+    await interaction.editReply({
+      content: "Please provide a role and username",
+    });
+    return;
+  }
+
   const content: string[] = [];
   // Getting the role ID and list of usernames from interaction options
   for (const role of Object.keys(roleMap)) {
@@ -121,7 +184,9 @@ export async function callback(
       content.push(...newContent);
     }
   }
-  console.log(content);
+  if (content.length === 0) {
+    content.push("No roles assigned.");
+  }
   await interaction.editReply({
     content: content.join("\n"),
   });
