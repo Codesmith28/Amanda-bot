@@ -54,3 +54,35 @@ export function getAllFiles(
 
   return fileNames;
 }
+
+const envs = [
+  "TOKEN",
+  "GEMINI_API_KEY",
+  "CLIENT_ID",
+  "MONGODB_URI",
+  "NODE_VERSION",
+  "GUILD_ID",
+  "MENTOR_ROLE_ID",
+  "ADMIN_ROLE_ID",
+  "REGISTRATION_CHANNEL_ID",
+  "STATUS_CHANNEL_ID",
+  "DAILYPROGRESS_CHANNEL_ID",
+  "EASY_CHANNEL_ID",
+  "MEDIUM1_CHANNEL_ID",
+  "MEDIUM2_CHANNEL_ID",
+  "HARD_CHANNEL_ID",
+  "EASY_ROLE_ID",
+  "MEDIUM1_ROLE_ID",
+  "MEDIUM2_ROLE_ID",
+  "HARD_ROLE_ID",
+  "ANNOUNCEMENT_CHANNEL_ID",
+];
+
+export function verifyEnvVariables(): void {
+  const missingEnvs = envs.filter((env) => !process.env[env]);
+
+  if (missingEnvs.length > 0) {
+    console.error("Missing environment variables:", missingEnvs);
+    process.exit(1);
+  }
+}

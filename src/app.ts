@@ -4,11 +4,12 @@ import express, { Request, Response } from "express";
 import mongoose from "mongoose";
 import "tsconfig-paths/register";
 import eventHandler from "./handlers/eventHandler";
+import { verifyEnvVariables } from "./utils/functions";
 
 dotenv.config();
-
+verifyEnvVariables();
 const app = express();
-const port = process.env.PORT || 4000;
+const port = Number(process.env.PORT) || 4000;
 
 app.get("/", (req: Request, res: Response) => {
   res.send("Hello World!");
@@ -39,6 +40,6 @@ async function loginBot() {
 }
 loginBot();
 
-app.listen(8080, "0.0.0.0", () => {
+app.listen(port, "0.0.0.0", () => {
   console.log(`Server is running on http://0.0.0.0:${port}`);
 });
