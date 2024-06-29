@@ -10,7 +10,7 @@ dotenv.config();
 
 const apiKey = process.env.GEMINI_API_KEY!;
 const genAI = new GoogleGenerativeAI(apiKey);
-
+const history: Content[] = [];
 const generationConfig = {
   temperature: 1,
   topP: 0.95,
@@ -82,8 +82,8 @@ export async function replyWithData(
 export async function reply(
   message: string,
   system?: string,
-
-  maxOutputTokens?: number
+  maxOutputTokens?: number,
+  username?: string
 ): Promise<string> {
   const model = genAI.getGenerativeModel({
     model: "gemini-1.5-flash",
@@ -94,11 +94,19 @@ export async function reply(
   if (maxOutputTokens) {
     generationConfig.maxOutputTokens = maxOutputTokens;
   }
+  history.push({
+    role: "user",
+    parts: [{ text: message }],
+  });
   const chatSession = model.startChat({
     generationConfig,
-    history: [],
+    history,
   });
   const result = await chatSession.sendMessage([{ text: message }]);
+  history.push({
+    role: "model",
+    parts: [{ text: result.response.text() }],
+  });
 
   return result.response.text();
 }

@@ -2,12 +2,7 @@ import { Client, Message } from "discord.js";
 
 import { saveErrorToDatabase } from "@/utils/functions";
 import { reply } from "@/utils/gemini";
-
-const systemInstruction = `
-
-You are a discord bot and your job is to help the user with their queries. give concise and helpful replies.
-
-`;
+import { getSystemInstruction } from "@/utils/getSystemInstructions";
 
 export default async function giveXp(client: Client, message: Message) {
   if (
@@ -18,7 +13,20 @@ export default async function giveXp(client: Client, message: Message) {
     return;
 
   try {
-    const AIreply = await reply(message.content, systemInstruction, 1024);
+    message.member?.roles.cache.map((role) => console.log(role.name));
+    const AIreply = await reply(
+      message.content,
+      getSystemInstruction({
+        currentTime: new Date().toISOString(),
+        username: message.author.username,
+        Roles: message.member?.roles.cache.map((role) => {
+          if (role.name !== "@everyone" && role.name !== "admin")
+            return role.name;
+        }),
+      }),
+      1024,
+      message.author.username
+    );
 
     message.channel.send(`${message.author}, ${AIreply}`);
   } catch (error) {
