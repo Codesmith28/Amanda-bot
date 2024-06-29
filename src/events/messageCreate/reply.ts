@@ -27,7 +27,7 @@ export default async function giveXp(client: Client, message: Message) {
             return role.name;
         }),
       }),
-      256,
+      128,
       message.author.username
     );
 
