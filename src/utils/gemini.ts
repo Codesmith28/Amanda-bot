@@ -91,12 +91,13 @@ export async function reply(
 
     safetySettings,
   });
+  console.log(history);
   if (maxOutputTokens) {
     generationConfig.maxOutputTokens = maxOutputTokens;
   }
   history.push({
     role: "user",
-    parts: [{ text: message }],
+    parts: [{ text: username ? username + ": " + message : message }],
   });
   const chatSession = model.startChat({
     generationConfig,
