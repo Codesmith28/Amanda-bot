@@ -13,7 +13,6 @@ export default async function giveXp(client: Client, message: Message) {
     return;
 
   try {
-    message.member?.roles.cache.map((role) => console.log(role.name));
     const AIreply = await reply(
       message.content,
       getSystemInstruction({
