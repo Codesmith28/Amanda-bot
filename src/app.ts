@@ -38,8 +38,8 @@ async function loginBot() {
     console.error(error);
   }
 }
-loginBot();
 
-app.listen(port, () => {
+app.listen(port, "0.0.0.0", () => {
   console.log(`Server is running on PORT: ${port}`);
 });
+loginBot();
