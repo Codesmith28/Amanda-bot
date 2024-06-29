@@ -91,7 +91,7 @@ export async function reply(
 
     safetySettings,
   });
-  console.log(history);
+
   if (maxOutputTokens) {
     generationConfig.maxOutputTokens = maxOutputTokens;
   }
@@ -99,14 +99,19 @@ export async function reply(
     role: "user",
     parts: [{ text: username ? username + ": " + message : message }],
   });
+
   const chatSession = model.startChat({
     generationConfig,
     history,
   });
   const result = await chatSession.sendMessage([{ text: message }]);
+  const textResponse = result.response.text();
+  if (!textResponse) {
+    return "I am sorry. I have bugs.";
+  }
   history.push({
     role: "model",
-    parts: [{ text: result.response.text() }],
+    parts: [{ text: textResponse }],
   });
 
   return result.response.text();
