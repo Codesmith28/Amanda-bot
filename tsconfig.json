@@ -1,17 +1,21 @@
 {
   "compilerOptions": {
-    "target": "es6",
-    "module": "commonjs",
+    "target": "ESNext",
+    "module": "NodeNext",
     "resolveJsonModule": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
+    "incremental": true,
     "allowSyntheticDefaultImports": true,
     "baseUrl": "./",
+    "outDir": "./dist",
     "paths": {
       "@/*": ["src/*"],
       "@config": ["../../config.json"]
-    }
+    },
+    "skipLibCheck": true
   },
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "typings"],
+  "include": ["./src/**/*"]
 }
