@@ -86,3 +86,29 @@ export function verifyEnvVariables(): void {
     process.exit(1);
   }
 }
+
+export function formatDate(nextDate: Date) {
+  const currentDate = new Date();
+  const millisecondsPerDay = 24 * 60 * 60 * 1000;
+  const isNextTomorrow =
+    new Date(currentDate.getTime() + millisecondsPerDay).getDate() ===
+    nextDate.getDate();
+
+  const isNextToday = currentDate.getDate() === nextDate.getDate();
+  console.log(currentDate.getDate(), nextDate.getDate());
+  const timeString = nextDate.toLocaleTimeString([], {
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true,
+  });
+
+  let formattedDate = "";
+  if (isNextTomorrow) {
+    formattedDate = `Tomorrow ${timeString}`;
+  } else if (isNextToday) {
+    formattedDate = `Today ${timeString}`;
+  } else {
+    formattedDate = `${nextDate.toLocaleDateString()} ${timeString}`;
+  }
+  return formattedDate;
+}

@@ -5,7 +5,7 @@ import {
   ApplicationCommandOptionType,
 } from "discord.js";
 import User from "@/models/User";
-import { saveErrorToDatabase } from "@/utils/functions";
+import { formatDate, saveErrorToDatabase } from "@/utils/functions";
 import { replyWithData } from "@/utils/gemini";
 
 const systemPrompt = `
@@ -82,11 +82,17 @@ export async function callback(
       const timeDiff = currentDate.getTime() - lastDailyDate.getTime();
 
       if (timeDiff < millisecondsPerDay) {
+        const nextDate = new Date(
+          user.lastDaily.getTime() + millisecondsPerDay
+        );
+
         interaction.reply({
           content: `${
             interaction.member!.user
-          } you have already updated your progress, please come tomorrow to update your progress`,
-          // ephemeral: true
+          } You have already updated your progress, Please come back after **${formatDate(
+            nextDate
+          )}** to update again.`,
+          ephemeral: true,
         });
         return;
       }
