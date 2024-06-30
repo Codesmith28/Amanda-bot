@@ -95,24 +95,28 @@ export async function reply(
   if (maxOutputTokens) {
     generationConfig.maxOutputTokens = maxOutputTokens;
   }
-  //   history.push({
-  //     role: "user",
-  //     parts: [{ text: username ? username + ": " + message : message }],
-  //   });
+  try {
+    history.push({
+      role: "user",
+      parts: [{ text: username ? username + ": " + message : message }],
+    });
 
-  const chatSession = model.startChat({
-    generationConfig,
-    history: [],
-  });
-  const result = await chatSession.sendMessage([{ text: message }]);
-  const textResponse = result.response.text();
-  if (!textResponse) {
+    const chatSession = model.startChat({
+      generationConfig,
+      history: history,
+    });
+    const result = await chatSession.sendMessage([{ text: message }]);
+    const textResponse = result.response.text();
+    if (!textResponse) {
+      return "I am sorry. I have bugs.";
+    }
+    history.push({
+      role: "model",
+      parts: [{ text: textResponse }],
+    });
+    return textResponse;
+  } catch (error) {
+    console.log(error);
     return "I am sorry. I have bugs.";
   }
-  //   history.push({
-  //     role: "model",
-  //     parts: [{ text: textResponse }],
-  //   });
-
-  return result.response.text();
 }
