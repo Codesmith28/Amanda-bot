@@ -7,8 +7,7 @@ import {
 import { saveErrorToDatabase } from "@/utils/functions";
 
 import { testServer } from "../../../config.json";
-import { Client, ApplicationCommandData, ApplicationCommand } from "discord.js";
-import { CommandOption } from "@/utils/types";
+import { Client, ApplicationCommand } from "discord.js";
 
 export default async function manageCommands(client: Client): Promise<void> {
   try {
@@ -33,7 +32,7 @@ export default async function manageCommands(client: Client): Promise<void> {
           continue;
         }
 
-        if (areCommandsDifferent(existingCommand as any, localCommand as any)) {
+        if (areCommandsDifferent(existingCommand, localCommand)) {
           // To update the command
           await applicationCommands.edit(existingCommand.id, {
             description,

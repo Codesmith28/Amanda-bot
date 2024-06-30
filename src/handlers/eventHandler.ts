@@ -13,7 +13,6 @@ export default function eventHandler(client: Client): void {
     eventFiles.sort((a, b) => a.localeCompare(b));
 
     const eventName = eventFolder.split(/[\/\\]/).pop();
-    console.log(eventName);
 
     if (eventName) {
       client.on(eventName, async (args: any) => {
