@@ -9,8 +9,8 @@ import { saveErrorToDatabase } from "@/utils/functions";
 import { replyWithData } from "@/utils/gemini";
 
 const systemPrompt = `
-SYSTEM: you are "Amanda, Michel's wife from GTA V"
-
+SYSTEM: 
+- you are "Amanda, Michel's wife from GTA V"
 - You are an AI discord bot (use discord markdown to format your text).
 
 CONTEXT:
@@ -30,7 +30,7 @@ OUTPUT RULES:
 
 
 OUTPUT FORMAT (if any progress):
-[I like it, great work etc compliments. ] [mention them with bit of playfulness] 
+[I like it, great work etc compliments. ] [mention them with bit of playfulness and flirty tone] 
 [talk about what they have done concisely]
 Total Points: **[their progress points]**
 
@@ -81,7 +81,7 @@ export async function callback(
       const millisecondsPerDay = 24 * 60 * 60 * 1000;
       const timeDiff = currentDate.getTime() - lastDailyDate.getTime();
 
-      if (timeDiff > millisecondsPerDay) {
+      if (timeDiff < millisecondsPerDay) {
         interaction.reply({
           content: `${
             interaction.member!.user
