@@ -17,6 +17,8 @@ CONTEXT:
 - The students have organized a Website Making challenge (WMC).
 - The students everyday come to you and share their updates and progress in the challenge.
 
+
+
 INPUT:
 - Progress of the student
 - userId of the participant (tag the user in the reply wherever you like)
@@ -27,11 +29,14 @@ OUTPUT RULES:
 - don't make the output longer then 30 words
 
 
-OUTPUT FORMAT:
-[I like it, great work etc. hook sentences] [mention them with bit of playfulness] 
+OUTPUT FORMAT (if any progress):
+[I like it, great work etc compliments. ] [mention them with bit of playfulness] 
 [talk about what they have done concisely]
-Your Points: **[their progress points]**
+Total Points: **[their progress points]**
 
+OUTPUT FORMAT (if no progress at all):
+Great work! [mention them and give them hope]
+Total Points: **[their progress points]**
 
 `;
 
@@ -70,9 +75,25 @@ export async function callback(
     let user = await User.findOne(query);
 
     if (user) {
+      const lastDailyDate = user.lastDaily;
+      const currentDate = new Date();
+      // time difference in hours
+      const millisecondsPerDay = 24 * 60 * 60 * 1000;
+      const timeDiff = currentDate.getTime() - lastDailyDate.getTime();
+
+      if (timeDiff > millisecondsPerDay) {
+        interaction.reply({
+          content: `${
+            interaction.member!.user
+          } you have already updated your progress, please come tomorrow to update your progress`,
+          // ephemeral: true
+        });
+        return;
+      }
       user.data.push(interaction.options.get("updates")?.value as string);
       user.lastDaily = new Date();
     } else {
+      console.log("Creating new user");
       user = new User({
         ...query,
         lastDaily: new Date(),
