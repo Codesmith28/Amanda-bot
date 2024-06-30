@@ -5,7 +5,7 @@ import mongoose from "mongoose";
 import "tsconfig-paths/register";
 import eventHandler from "./handlers/eventHandler";
 import { verifyEnvVariables } from "./utils/functions";
-require("module-alias/register");
+
 dotenv.config();
 verifyEnvVariables();
 const app = express();
