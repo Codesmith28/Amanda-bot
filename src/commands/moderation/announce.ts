@@ -1,5 +1,7 @@
 // ping.ts
 
+import { reply } from "@/utils/gemini";
+import { getSystemInstruction } from "@/utils/getSystemInstructions";
 import {
   ApplicationCommandOptionType,
   Client,
@@ -25,8 +27,20 @@ export const options = [
     type: ApplicationCommandOptionType.Channel,
     required: false,
   },
+  {
+    name: "ai-assistance",
+    description: "Enable AI assistance for the message",
+    type: ApplicationCommandOptionType.Boolean,
+    required: false,
+  },
 ];
 export const deleted = false;
+
+const announcementSystemPrompt = `
+Now, You are an announcer for the server. you will be given some information to announce to the server. 
+make sure your message is clear, concise, straight to the point, and not too long
+
+`;
 
 const ADMIN_ROLE_ID = process.env.ADMIN_ROLE_ID!;
 export async function callback(
@@ -43,7 +57,17 @@ export async function callback(
     return;
   }
   await interaction.deferReply();
-  const message = interaction.options.get("message")!.value as string;
+  let message: string;
+  console.log(interaction.options.get("ai-assistance")?.value);
+  if (interaction.options.get("ai-assistance")?.value) {
+    message = await reply(
+      interaction.options.get("message")!.value as string,
+      getSystemInstruction() + announcementSystemPrompt
+    );
+    console.log(message);
+  } else {
+    message = interaction.options.get("message")!.value as string;
+  }
   if (interaction.options.get("channel")) {
     const channel = interaction.options.get("channel")!.channel!.id;
     const announcementChannel = client.channels.cache.get(
