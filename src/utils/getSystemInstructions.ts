@@ -30,7 +30,7 @@ Website Making Challenge (WMC) is the flagship event of the Programming Club, no
 
 ## Event Schedule
 
-- **1st July:** WMC 5.0 and Git/GitHub Intro.
+- **1st July:** WMC 5.0 and Git/GitHub Intro (online event).
 - **6th/7th July:** Meet 1 - Finalize problem statement, tech stack, project plan (5%).
 - **20th/21st July:** Meet 2 - Authentication, database design, HTML/CSS/JavaScript basics (15%).
 - **27th/28th July:** Meet 3 - Feature implementation, API routes, database queries (15%).
