@@ -58,13 +58,12 @@ export async function callback(
   }
   await interaction.deferReply();
   let message: string;
-  console.log(interaction.options.get("ai-assistance")?.value);
+
   if (interaction.options.get("ai-assistance")?.value) {
     message = await reply(
       interaction.options.get("message")!.value as string,
       getSystemInstruction() + announcementSystemPrompt
     );
-    console.log(message);
   } else {
     message = interaction.options.get("message")!.value as string;
   }
