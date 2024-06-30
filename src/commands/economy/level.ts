@@ -69,6 +69,12 @@ export async function callback(
       username: targetUserObj.user.username,
       //   role: getRole(targetUserObj),
     });
+    if (!fetchedLevel) {
+      await interaction.editReply(
+        `No level data found for ${targetUserObj.user.username}. You are not registered in the database.`
+      );
+      return;
+    }
 
     // Fetch all levels and sort them based on level and XP
     let allLevels = await Level.find().select("-_id username level xp");
