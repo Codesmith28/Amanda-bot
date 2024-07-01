@@ -76,6 +76,7 @@ const envs = [
   "MEDIUM2_ROLE_ID",
   "HARD_ROLE_ID",
   "ANNOUNCEMENT_CHANNEL_ID",
+  "CONTROL_CENTER_CHANNEL_ID",
 ];
 
 export function verifyEnvVariables(): void {
