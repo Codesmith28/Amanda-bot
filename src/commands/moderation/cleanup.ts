@@ -38,7 +38,7 @@ export const options = [
     ],
   },
 ];
-export const deleted = false;
+export const deleted = true;
 
 export async function callback(
   client: Client,
