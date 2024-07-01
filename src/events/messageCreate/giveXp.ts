@@ -60,12 +60,14 @@ export default async function giveXp(client: Client, message: Message) {
         cooldowns.delete(message.author.id);
       }, 60000);
     } else {
-      const statusChannelID = process.env.STATUS_CHANNEL_ID;
-      const statusChannel = client.channels.cache.get(
-        statusChannelID!
+      //   get the control-center channel
+      const controlCenterChannel = client.channels.cache.get(
+        process.env.CONTROL_CENTER_CHANNEL_ID!
       ) as TextChannel;
 
-      statusChannel.send(`${message.member} you haven't registered in the db`);
+      controlCenterChannel.send(
+        `${message.member} haven't registered in the db`
+      );
       //message.channel.send(
       //    `${message.author} you haven't registered in the db`,
       //);
