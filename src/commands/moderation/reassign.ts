@@ -195,7 +195,16 @@ export async function callback(
   if (content.length === 0) {
     content.push("No roles updated.");
   }
-  await interaction.editReply({
-    content: content.join("\n"),
-  });
+  //   break the content into multiple messages
+  const chunkSize = 20;
+  for (let i = 0; i < content.length; i += chunkSize) {
+    const chunk = content.slice(i, i + chunkSize);
+    await interaction.followUp({
+      content: chunk.join("\n"),
+    });
+  }
+
+  //   await interaction.editReply({
+  //     content: content.join("\n"),
+  //   });
 }
