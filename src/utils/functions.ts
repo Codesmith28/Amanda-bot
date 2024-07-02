@@ -113,3 +113,7 @@ export function formatDate(nextDate: Date) {
   }
   return formattedDate;
 }
+
+export function mentionUserId(roleId: string): string {
+  return `<@&${roleId}>`;
+}

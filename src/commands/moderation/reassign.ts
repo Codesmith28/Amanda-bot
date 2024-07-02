@@ -6,6 +6,7 @@ import {
 } from "discord.js";
 import { ProblemRole } from "@/utils/types";
 import Level, { LevelDocument } from "@/models/Level";
+import { mentionUserId } from "@/utils/functions";
 export const name = "reassign";
 export const description = "assign the roles from the database to the user";
 export const devOnly = false;
@@ -73,9 +74,6 @@ function getRoleIds(member: GuildMember): string[] {
 function arrayIntersection<T>(array1: T[], array2: T[]): T[] {
   return array1.filter((value) => array2.includes(value));
 }
-function mentionRoleId(roleId: string): string {
-  return `<@&${roleId}>`;
-}
 
 async function assignRoleToUsers(
   interaction: CommandInteraction,
@@ -114,13 +112,13 @@ async function assignRoleToUsers(
         } else if (commonRoles.length == 0) {
           await guildMember.roles.add(roleID);
           content.push(
-            `Assigned ${mentionRoleId(roleID)} to ${guildMember.user}`
+            `Assigned ${mentionUserId(roleID)} to ${guildMember.user}`
           );
         } else {
           await guildMember.roles.remove(commonRoles);
           await guildMember.roles.add(roleID);
           content.push(
-            `**Reassigned** ${mentionRoleId(roleID)} to ${guildMember.user}`
+            `**Reassigned** ${mentionUserId(roleID)} to ${guildMember.user}`
           );
         }
       } else {

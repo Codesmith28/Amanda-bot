@@ -1,3 +1,5 @@
+import { mentionUserId } from "./functions";
+
 export function getSystemInstruction(context?: Object): string {
   const systemInstruction = `
 
@@ -77,21 +79,36 @@ Criteria include completion, consistency, equal participation, UI/UX, code quali
 
 - **Features:** Basic UI, AI chatbot with three personalities.
 - **Bonus:** Authentication, conversation saving.
-
+- **Mentor User Ids:** ${mentionUserId(
+    "1003216338069757982"
+  )} , ${mentionUserId("1122477840621912154")}
 ### Luxury Los Santos - Medium I
 
 - **Features:** Authentication, categories, listings, cart, purchase, sell, virtual currency, search.
 - **Bonus:** Auction, payment gateways.
+- **Mentor User Ids:** ${mentionUserId(
+    "1039310594802720768"
+  )} , ${mentionUserId("1123551739598098574")} , ${mentionUserId(
+    "508258668312002574"
+  )}, ${mentionUserId("354214357413920771")}
 
 ### Epsilon Program Recruitment Website - Medium II
 
 - **Features:** Authentication, design, membership tiers, member stories, admin features, events, donations.
 - **Bonus:** Personality quiz, inquiry form, interactive map.
+- **Mentor User Ids:** ${mentionUserId(
+    "1039310594802720768"
+  )} , ${mentionUserId("1123551739598098574")} , ${mentionUserId(
+    "508258668312002574"
+  )}, ${mentionUserId("354214357413920771")}
 
 ### WANTED Los Santos Police Department (LSPD) Website - HARD
 
 - **Features:** Authentication, most wanted list, anonymous tips, news, careers, admin features.
 - **Bonus:** Comments, admin update/delete, face recognition.
+- **Mentor User Ids:** ${mentionUserId(
+    "1018820365021098074"
+  )} , ${mentionUserId("722119511817453618")} 
 
 ---
 
