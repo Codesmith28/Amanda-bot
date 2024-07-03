@@ -1,4 +1,4 @@
-import { Schema, Document, model } from 'mongoose';
+import { Schema, Document, model } from "mongoose";
 
 // Define interface for the document structure
 export interface LevelDocument extends Document {
@@ -6,11 +6,16 @@ export interface LevelDocument extends Document {
   role: string;
   xp: number;
   level: number;
+  name: string;
 }
 
 // Create the schema using TypeScript's type annotations
 const levelSchema = new Schema<LevelDocument>({
   username: {
+    type: String,
+    required: true,
+  },
+  name: {
     type: String,
     required: true,
   },
@@ -29,6 +34,6 @@ const levelSchema = new Schema<LevelDocument>({
 });
 
 // Define and export the model with LevelDocument type
-const Level = model<LevelDocument>('Level', levelSchema);
+const Level = model<LevelDocument>("Level", levelSchema);
 
 export default Level;

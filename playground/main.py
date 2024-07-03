@@ -7,6 +7,7 @@ newCsv = {
 	"role": [],
 	"xp":[],
 	"level":[],
+	"name":[]
 }
 
 problemMap = {
@@ -22,12 +23,15 @@ for index, row in data.iterrows():
 	username = row["Your Discord Username"]
 	role = problemMap[row['Which Problem Statement would you like to work on?']]
 	username2 = row['Discord Username']
+	name = row["Name"]
+	newCsv["name"].append(name)
 	newCsv["username"].append(username)
 	newCsv["role"].append(role)
 	newCsv["xp"].append(0)
 	newCsv["level"].append(0)
 	if not pd.isnull(username2):
 		print(username2)
+		newCsv["name"].append(row["Name.1"])
 		newCsv["username"].append(username2)
 		newCsv["role"].append(role)
 		newCsv["xp"].append(0)
