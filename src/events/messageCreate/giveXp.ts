@@ -19,7 +19,7 @@ export default async function giveXp(client: Client, message: Message) {
     message.author.bot ||
     cooldowns.has(message.author.id) ||
     getRoleName(message).includes("admin") ||
-    getRoleName(message).includes("mentor")
+    getRoleName(message).includes("mentors")
   ) {
     return;
   }
