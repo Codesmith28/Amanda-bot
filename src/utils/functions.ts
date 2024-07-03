@@ -2,6 +2,7 @@ import { MongoClient } from "mongodb";
 import dotenv from "dotenv";
 import fs from "fs";
 import path from "path";
+import { Message } from "discord.js";
 
 dotenv.config();
 
@@ -116,4 +117,13 @@ export function formatDate(nextDate: Date) {
 
 export function mentionUserId(roleId: string): string {
   return `<@&${roleId}>`;
+}
+export function getRoleName(message: Message) {
+  const authorRoles = message.member!.roles.cache;
+  let roleArr: string[] = [];
+  authorRoles.forEach((role) => {
+    roleArr.push(role.name);
+  });
+  // console.log(roleArr[0]);
+  return roleArr;
 }

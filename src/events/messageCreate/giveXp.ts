@@ -1,6 +1,6 @@
 import { Client, Collection, Message, Role, TextChannel } from "discord.js";
 
-import { calculateLevelUpXp } from "@/utils/functions";
+import { calculateLevelUpXp, getRoleName } from "@/utils/functions";
 import { saveErrorToDatabase } from "@/utils/functions";
 import Level from "@/models/Level";
 
@@ -13,19 +13,16 @@ function getRandomXp(min: number, max: number) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-function getRole(message: Message) {
-  const authorRoles = message.member!.roles.cache;
-  let roleArr: string[] = [];
-  authorRoles.forEach((role) => {
-    roleArr.push(role.name);
-  });
-  // console.log(roleArr[0]);
-  return roleArr[0];
-}
-
 export default async function giveXp(client: Client, message: Message) {
-  if (!message.guild || message.author.bot || cooldowns.has(message.author.id))
+  if (
+    !message.guild ||
+    message.author.bot ||
+    cooldowns.has(message.author.id) ||
+    getRoleName(message).includes("admin") ||
+    getRoleName(message).includes("mentor")
+  ) {
     return;
+  }
 
   const xpToGive = getRandomXp(1, 15);
 
