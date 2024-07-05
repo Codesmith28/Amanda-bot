@@ -13,7 +13,11 @@ function getRandomXp(min: number, max: number) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-export default async function giveXp(client: Client, message: Message) {
+export default async function giveXp(
+  client: Client,
+  message: Message,
+  fixXp: number,
+) {
   if (
     !message.guild ||
     message.author.bot ||
@@ -24,7 +28,7 @@ export default async function giveXp(client: Client, message: Message) {
     return;
   }
 
-  const xpToGive = getRandomXp(1, 15);
+  const xpToGive = fixXp ? fixXp : getRandomXp(1, 15);
 
   const query = {
     username: message.author.username,
@@ -40,11 +44,11 @@ export default async function giveXp(client: Client, message: Message) {
         level.level += 1;
         const statusChannelID = process.env.STATUS_CHANNEL_ID;
         const statusChannel = client.channels.cache.get(
-          statusChannelID!
+          statusChannelID!,
         ) as TextChannel;
 
         statusChannel!.send(
-          `${message.member} you have leveled up to **level ${level.level}**.`
+          `${message.member} you have leveled up to **level ${level.level}**.`,
         );
       }
 
@@ -59,11 +63,11 @@ export default async function giveXp(client: Client, message: Message) {
     } else {
       //   get the control-center channel
       const controlCenterChannel = client.channels.cache.get(
-        process.env.CONTROL_CENTER_CHANNEL_ID!
+        process.env.CONTROL_CENTER_CHANNEL_ID!,
       ) as TextChannel;
 
       controlCenterChannel.send(
-        `${message.member} haven't registered in the db`
+        `${message.member} haven't registered in the db`,
       );
       //message.channel.send(
       //    `${message.author} you haven't registered in the db`,

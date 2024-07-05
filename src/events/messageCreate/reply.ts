@@ -4,7 +4,10 @@ import { saveErrorToDatabase } from "@/utils/functions";
 import { reply } from "@/utils/gemini";
 import { getSystemInstruction } from "@/utils/getSystemInstructions";
 
-export default async function giveXp(client: Client, message: Message) {
+export default async function giveXpAmandaReply(
+  client: Client,
+  message: Message
+) {
   //   respond to DMs
 
   if (
