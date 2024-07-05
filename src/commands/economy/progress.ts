@@ -1,15 +1,15 @@
-// progress.ts
-import {
-  CommandInteraction,
-  Client,
-  ApplicationCommandOptionType,
-} from "discord.js";
+import giveXp from "@/events/messageCreate/giveXp";
 import User from "@/models/User";
 import { formatDate, saveErrorToDatabase } from "@/utils/functions";
 import { replyWithData } from "@/utils/gemini";
+import {
+  ApplicationCommandOptionType,
+  Client,
+  CommandInteraction,
+} from "discord.js";
 
 const systemPrompt = `
-SYSTEM: 
+SYSTEM:
 - you are "Amanda, Michel's wife from GTA V"
 - You are an AI discord bot (use discord markdown to format your text).
 
@@ -17,27 +17,23 @@ CONTEXT:
 - The students have organized a Website Making challenge (WMC).
 - The students everyday come to you and share their updates and progress in the challenge.
 
-
-
 INPUT:
 - Progress of the student
 - userId of the participant (tag the user in the reply wherever you like)
 - current daily progress points of the participant (mention this in reply)
 
-OUTPUT RULES: 
-- follow the given OUTPUT FORMAT 
+OUTPUT RULES:
+- follow the given OUTPUT FORMAT
 - don't make the output longer then 30 words
 
-
 OUTPUT FORMAT (if any progress):
-[I like it, great work etc compliments. ] [mention them with bit of playfulness and flirty tone] 
+[I like it, great work etc compliments. ] [mention them with bit of playfulness and flirty tone]
 [talk about what they have done concisely]
 Total Points: **[their progress points]**
 
 OUTPUT FORMAT (if no progress at all):
 Great work! [mention them and give them hope]
 Total Points: **[their progress points]**
-
 `;
 
 export const name = "progress";
@@ -68,7 +64,7 @@ export async function callback(
 
   try {
     const query = {
-      userId: interaction.member!.user.id,
+      userId: interaction.user.id,
       guildId: interaction.guild!.id,
     };
 
@@ -77,7 +73,6 @@ export async function callback(
     if (user) {
       const lastDailyDate = user.lastDaily;
       const currentDate = new Date();
-      // time difference in hours
       const millisecondsPerDay = 24 * 60 * 60 * 1000;
       const timeDiff = currentDate.getTime() - lastDailyDate.getTime();
 
@@ -86,18 +81,23 @@ export async function callback(
           user.lastDaily.getTime() + millisecondsPerDay
         );
 
-        interaction.reply({
+        await interaction.reply({
           content: `${
-            interaction.member!.user
-          } You have already updated your progress, Please come back after **${formatDate(
+            interaction.user
+          } You have already updated your progress. Please come back after **${formatDate(
             nextDate
           )}** to update again.`,
           ephemeral: true,
         });
         return;
       }
+
       user.data.push(interaction.options.get("updates")?.value as string);
       user.lastDaily = new Date();
+
+      // Use giveXp function to add XP
+      await giveXp(client, interaction as any, 25);
+      
     } else {
       console.log("Creating new user");
       user = new User({
@@ -106,6 +106,9 @@ export async function callback(
         data: [interaction.options.get("updates")?.value as string],
         points: 25,
       });
+
+      // Use giveXp function for new user as well
+      await giveXp(client, interaction as any, 25);
     }
 
     user.points += 25;
@@ -121,9 +124,7 @@ export async function callback(
 
     if (message === "BhagulobsDobby") {
       await interaction.editReply({
-        content: `Good progress, ${
-          interaction.member!.user
-        }! You have earned 25 points. Your total points: ${user.points}`,
+        content: `Good progress, ${interaction.user}! You have earned 25 points. Your total points: ${user.points}`,
       });
     } else {
       await interaction.editReply({
